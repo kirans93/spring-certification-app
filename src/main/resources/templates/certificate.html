@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f9f9f9, #e0f7fa);
+            border: 8px solid #1976d2;
+            padding: 40px;
+            text-align: center;
+        }
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #1976d2;
+            margin-bottom: 20px;
+        }
+        .subtitle {
+            font-size: 22px;
+            margin-bottom: 40px;
+        }
+        .name {
+            font-size: 28px;
+            font-weight: bold;
+            color: #d32f2f;
+            margin: 20px 0;
+        }
+        .footer {
+            margin-top: 50px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">Certificate of Completion</div>
+    <div class="subtitle">This is proudly presented to</div>
+
+    <div class="name" th:text="${studentName}">Student Name</div>
+
+    <div class="subtitle">
+        for successfully completing the training <br/>
+        <span th:text="${trainingTitle}">Training Title</span>
+    </div>
+
+    <div class="footer">
+        Trainer: <span th:text="${trainerName}">Trainer Name</span><br/>
+        Issued on: <span th:text="${issueDate}">2025-08-27</span><br/>
+        Certificate ID: <span th:text="${certificateId}">CERT-001</span>
+    </div>
+</body>
+</html>
