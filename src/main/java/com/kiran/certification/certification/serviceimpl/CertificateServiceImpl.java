@@ -9,7 +9,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import com.kiran.certification.certification.model.Certificate;
@@ -19,13 +18,12 @@ import com.kiran.certification.certification.repo.CertificateRepository;
 import com.kiran.certification.certification.repo.TrainingRepository;
 import com.kiran.certification.certification.service.CertificateService;
 
-
 @Service
 public class CertificateServiceImpl implements CertificateService {
 
     private final CertificateRepository certificateRepository;
     private final TrainingRepository trainingRepository;
-    private final TemplateEngine templateEngine;   // ✅ added for HTML rendering
+    private final TemplateEngine templateEngine;
 
     public CertificateServiceImpl(CertificateRepository certificateRepository,
                                   TrainingRepository trainingRepository,
@@ -40,7 +38,7 @@ public class CertificateServiceImpl implements CertificateService {
         Training training = trainingRepository.findById(trainingId)
                 .orElseThrow(() -> new RuntimeException("Training not found with id: " + trainingId));
 
-        if (!training.getCompletionStatus()) {
+        if (!Boolean.TRUE.equals(training.getCompletionStatus())) {
             throw new RuntimeException("Cannot generate certificate: Training not completed yet");
         }
 
@@ -55,7 +53,7 @@ public class CertificateServiceImpl implements CertificateService {
             certificate.setStudent(student);
             certificate.setTrainer(training.getTrainer());
             certificate.setIssueDate(LocalDate.now());
-            certificate.setCertificateId(UUID.randomUUID().toString());
+            certificate.setCertificateId("CERT-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase());
             certificates.add(certificateRepository.save(certificate));
         }
 
@@ -70,32 +68,24 @@ public class CertificateServiceImpl implements CertificateService {
 
     @Override
     public byte[] downloadCertificate(Long id) {
-        Certificate certificate = certificateRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Certificate not found with id: " + id));
+        Certificate certificate = getCertificateById(id);
 
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            // ✅ Prepare Thymeleaf context
+            Student student = certificate.getStudent();
+            String studentName = (student != null ? student.getName() : "UNKNOWN");
+
+            // Debug log
+            System.out.println("DEBUG: Student Name = " + studentName);
+
             Context context = new Context();
-            context.setVariable("studentName", certificate.getStudent().getName());
-            context.setVariable("trainingTitle", certificate.getTraining().getTitle());
-            context.setVariable("trainerName", certificate.getTrainer().getName());
+            context.setVariable("companyName", "ProIntern Training");
+            context.setVariable("recipientName", studentName);
+            context.setVariable("courseFocus", certificate.getTraining().getTitle()); // ✅ Only title now
             context.setVariable("issueDate", certificate.getIssueDate().toString());
             context.setVariable("certificateId", certificate.getCertificateId());
 
-            // ✅ Setup Thymeleaf template resolver
-            ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
-            resolver.setPrefix("templates/");   // looks inside resources/templates/
-            resolver.setSuffix(".html");
-            resolver.setTemplateMode("XHTML");  // safer for PDF rendering
-            resolver.setCharacterEncoding("UTF-8");
-
-            TemplateEngine templateEngine = new TemplateEngine();
-            templateEngine.setTemplateResolver(resolver);
-
-            // ✅ Render HTML using template
             String htmlContent = templateEngine.process("certificate", context);
 
-            // ✅ Convert HTML → PDF using Flying Saucer
             ITextRenderer renderer = new ITextRenderer();
             renderer.setDocumentFromString(htmlContent);
             renderer.layout();

@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.kiran.certification.certification.AppTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.820 s -- in com.kiran.certification.certification.AppTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.377 s -- in com.kiran.certification.certification.AppTest

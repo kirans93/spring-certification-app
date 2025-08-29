@@ -1,52 +1,170 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #f9f9f9, #e0f7fa);
-            border: 8px solid #1976d2;
-            padding: 40px;
-            text-align: center;
-        }
-        .title {
-            font-size: 32px;
-            font-weight: bold;
-            color: #1976d2;
-            margin-bottom: 20px;
-        }
-        .subtitle {
-            font-size: 22px;
-            margin-bottom: 40px;
-        }
-        .name {
-            font-size: 28px;
-            font-weight: bold;
-            color: #d32f2f;
-            margin: 20px 0;
-        }
-        .footer {
-            margin-top: 50px;
-            font-size: 14px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Certificate</title>
+  <style>
+    /* ✅ Page size for PDF */
+    @page {
+      size: A4 landscape;
+      margin: 20mm;
+    }
+
+    body {
+      font-family: "Arial", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #fff;
+    }
+
+    table.outer {
+      width: 100%;
+      height: 100%;
+      border: 10px solid #2c3e50;
+      border-collapse: collapse;
+    }
+
+    .company {
+      font-size: 20px;
+      font-weight: bold;
+      color: #e67e22;
+      text-align: right;
+      padding: 10px 20px;
+    }
+
+    h1 {
+      font-size: 42px;
+      font-weight: bold;
+      margin: 20px 0 0;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 22px;
+      margin: 5px 0 20px;
+      color: #2c3e50;
+      text-align: center;
+    }
+
+    .stars {
+      font-size: 24px;
+      color: #f39c12;
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      margin: 10px 0;
+      color: #333;
+      text-align: center;
+    }
+
+    .recipient {
+      font-size: 28px;
+      font-weight: bold;
+      margin: 15px 0;
+      text-align: center;
+    }
+
+    .description {
+      font-size: 16px;
+      margin: 15px 0;
+      text-align: center;
+    }
+
+    .internship {
+      font-size: 18px;
+      color: #0d47a1;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .focus {
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .course {
+      font-size: 14px;
+      margin: 20px 40px;
+      line-height: 1.4;
+      color: #333;
+      text-align: center;
+    }
+
+    .signature {
+      font-size: 16px;
+      margin-top: 40px;
+    }
+
+    .certificate-id {
+      font-size: 12px;
+      color: #555;
+      text-align: right;
+      padding: 10px 20px;
+    }
+  </style>
 </head>
 <body>
-    <div class="title">Certificate of Completion</div>
-    <div class="subtitle">This is proudly presented to</div>
+  <table class="outer">
+    <tr>
+      <td>
+        <!-- Company -->
+        <div class="company" th:text="${companyName}">ProIntern Training</div>
 
-    <div class="name" th:text="${studentName}">Student Name</div>
+        <!-- Titles -->
+        <h1>CERTIFICATE</h1>
+        <h2>OF APPRECIATION</h2>
 
-    <div class="subtitle">
-        for successfully completing the training <br/>
-        <span th:text="${trainingTitle}">Training Title</span>
-    </div>
+        <!-- Stars -->
+        <div class="stars">★ ★ ★ ★</div>
 
-    <div class="footer">
-        Trainer: <span th:text="${trainerName}">Trainer Name</span><br/>
-        Issued on: <span th:text="${issueDate}">2025-08-27</span><br/>
-        Certificate ID: <span th:text="${certificateId}">CERT-001</span>
-    </div>
+        <!-- Recipient -->
+        <div class="subtitle">This is to certify that</div>
+        <div class="recipient" th:text="${recipientName}">RECIPIENT NAME</div>
+
+        <!-- Description -->
+        <div class="description">
+         is awarded this certificate for the successful completion of the internship program in
+
+        </div>
+
+        <!-- Internship Title -->
+        
+        <div class="focus" th:text="${courseFocus}">COURSE / PROJECT FOCUS</div>
+
+        <!-- Course details -->
+        <div class="course">
+          A foundational course consisting of 15 structured online lessons covering<br />
+          essential grammar rules and usage.
+        </div>
+
+        <!-- Bottom Section -->
+        <table style="width:100%; margin-top:40px; text-align:center;">
+          <tr>
+            <td style="width:50%; vertical-align:top;">
+              <strong>ISSUE DATE</strong><br />
+              <span th:text="${issueDate}">2025-08-26</span>
+            </td>
+            <td style="width:50%; vertical-align:top;">
+              <div class="signature">
+                __________________ <br />
+                Signature
+              </div>
+            </td>
+          </tr>
+        </table>
+
+        <!-- Certificate ID -->
+        <div class="certificate-id"
+             th:text="'Certificate ID: ' + ${certificateId}">
+          Certificate ID: CERT-001
+        </div>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>

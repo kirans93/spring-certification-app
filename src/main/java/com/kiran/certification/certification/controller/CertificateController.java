@@ -41,13 +41,13 @@ public class CertificateController {
     public ResponseEntity<List<Certificate>> getAllCertificates() {
         return ResponseEntity.ok(certificateService.getAllCertificates());
     }
+   
     @GetMapping("/download/{id}")
     public ResponseEntity<byte[]> downloadCertificate(@PathVariable Long id) {
         byte[] pdfBytes = certificateService.downloadCertificate(id);
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=certificate_" + id + ".pdf")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=certificate_" + id + ".pdf")
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(pdfBytes);
     }
