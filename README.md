@@ -113,4 +113,4 @@ As a developer, I have:
 
 ## 📄 License
 
-This project is for educational and training purposes.
+------------------------------------------------------------------------------------
