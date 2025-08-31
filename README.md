@@ -57,8 +57,8 @@ src/main/java/com/kiran/certification/certification
 
 1. **Clone repository**
    ```bash
-   git clone https://github.com/your-username/certificate-generation-system.git
-   cd certificate-generation-system
+   git clone git@github.com:kirans93/spring-certification-app.git
+   cd spring-certification-app
    ```
 
 2. **Configure database**  
